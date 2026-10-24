@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    name: Pruebas del pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Instalar Python 3.12
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-3.12.txt
+
+      # Las constraints fijan las mismas versiones que usa la imagen de Docker
+      - name: Instalar dependencias
+        run: pip install -r requirements-dev.txt --constraint constraints-3.12.txt
+
+      - name: Ejecutar pruebas
+        run: pytest -v
