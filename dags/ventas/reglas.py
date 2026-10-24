@@ -61,7 +61,7 @@ def _precio_positivo(valor):
     # se redondea antes de comparar: "0.004" termina siendo 0.00
     precio = round(float(valor), 2)
     # un número de cientos de dígitos se vuelve inf al pasar a float
-    return precio if math.isfinite(precio) and precio > 0 else None
+    return precio if math.isfinite(precio) and precio >= 0 else None
 
 
 def validar_fila(fila, fecha):
